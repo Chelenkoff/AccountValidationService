@@ -1,0 +1,3 @@
+                new Account() { Id = 1, Email = "ivanivano@gmail.com", Iban = "BG80BNBG96611020345678", Username = "i.ivanov" },
+                new Account() { Id = 2, Email = "p.draganov@yahoo.com", Iban = "BG80BNBG96611020345679", Username = "pdraganov" },
+                new Account() { Id = 3, Email = "lubo@abv.bg", Iban = "BG80BNBG96611020345658", Username = "lubo93" }

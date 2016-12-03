@@ -18,16 +18,35 @@ namespace AccountValidationService.Controllers
         private AccountValidationServiceContext db = new AccountValidationServiceContext();
 
         // GET: api/Accounts
-        public IQueryable<Account> GetAccounts()
+        public IQueryable<AccountDTO> GetAccounts()
         {
-            return db.Accounts;
+            var accounts = from a in db.Accounts
+                           select new AccountDTO()
+                           {
+                               Email = a.Email,
+                               Iban = a.Iban,
+                               Id = a.Id,
+                               Username = a.Username
+                           };
+
+            return accounts;
         }
 
         // GET: api/Accounts/5
-        [ResponseType(typeof(Account))]
+        [ResponseType(typeof(AccountDTO))]
         public async Task<IHttpActionResult> GetAccount(int id)
         {
-            Account account = await db.Accounts.FindAsync(id);
+
+            var account = await db.Accounts.Select(b =>
+              new AccountDTO()
+              {
+
+                  Username = b.Username,
+                  Id = b.Id,
+                  Iban = b.Iban,
+                  Email = b.Email
+              }).SingleOrDefaultAsync(b => b.Id == id);
+
             if (account == null)
             {
                 return NotFound();
@@ -45,7 +64,7 @@ namespace AccountValidationService.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != account.accountId)
+            if (id != account.Id)
             {
                 return BadRequest();
             }
@@ -83,7 +102,18 @@ namespace AccountValidationService.Controllers
             db.Accounts.Add(account);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = account.accountId }, account);
+            // New code:
+
+            var dto = new AccountDTO()
+            {
+                Email = account.Email,
+                Iban = account.Iban,
+                Id = account.Id,
+                Username = account.Username
+            };
+
+
+            return CreatedAtRoute("DefaultApi", new { id = account.Id }, dto);
         }
 
         // DELETE: api/Accounts/5
@@ -113,7 +143,7 @@ namespace AccountValidationService.Controllers
 
         private bool AccountExists(int id)
         {
-            return db.Accounts.Count(e => e.accountId == id) > 0;
+            return db.Accounts.Count(e => e.Id == id) > 0;
         }
     }
 }

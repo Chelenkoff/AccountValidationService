@@ -11,12 +11,12 @@ namespace AccountValidationService.Migrations
                 "dbo.Accounts",
                 c => new
                     {
-                        accountId = c.Int(nullable: false, identity: true),
+                        Id = c.Int(nullable: false, identity: true),
                         Email = c.String(nullable: false),
                         Iban = c.String(nullable: false),
                         Username = c.String(nullable: false),
                     })
-                .PrimaryKey(t => t.accountId);
+                .PrimaryKey(t => t.Id);
             
         }
         

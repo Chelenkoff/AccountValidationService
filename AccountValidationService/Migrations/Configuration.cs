@@ -1,10 +1,10 @@
 namespace AccountValidationService.Migrations
 {
+    using Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
-    using AccountValidationService.Models;
 
     internal sealed class Configuration : DbMigrationsConfiguration<AccountValidationService.Models.AccountValidationServiceContext>
     {
@@ -26,13 +26,14 @@ namespace AccountValidationService.Migrations
             //      new Person { FullName = "Brice Lambson" },
             //      new Person { FullName = "Rowan Miller" }
             //    );
+            //
 
-            context.Accounts.AddOrUpdate(
-                x => x.accountId,
-                new Account { accountId = 1, Username ="d.petkov87", Email = "d.petkov87@gmail.com", Iban = "BG80BNBG96611020345678" },
-                new Account { accountId = 2, Username = "mariana_ilieva_88", Email = "milieva@abv.bg", Iban = "BG80BNBG96611020345679" },
-                new Account { accountId = 3, Username = "mr_millionaire", Email = "giliev222@tu-sofia.bg", Iban = "BG80BNBG96611020345680" }
+            
 
+            context.Accounts.AddOrUpdate(x => x.Id,
+                new Account() { Id = 1, Email = "ivanivano@gmail.com", Iban = "BG80BNBG96611020345678", Username = "i.ivanov" },
+                new Account() { Id = 2, Email = "p.draganov@yahoo.com", Iban = "BG80BNBG96611020345679", Username = "pdraganov" },
+                new Account() { Id = 3, Email = "lubo@abv.bg", Iban = "BG80BNBG96611020345658", Username = "lubo93" }
                 );
         }
     }

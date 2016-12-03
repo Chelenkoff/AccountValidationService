@@ -13,7 +13,7 @@ namespace AccountValidationService.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201611130921397_Initial"; }
+            get { return "201611201959582_Initial"; }
         }
         
         string IMigrationMetadata.Source
