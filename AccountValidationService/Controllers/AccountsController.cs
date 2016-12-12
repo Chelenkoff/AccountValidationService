@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using AccountValidationService.Models;
+using AccountValidationService.Tools;
 
 namespace AccountValidationService.Controllers
 {
@@ -51,6 +52,52 @@ namespace AccountValidationService.Controllers
             {
                 return NotFound();
             }
+
+
+            return Ok(account);
+        }
+
+        // GET: api/Accounts/?email=&username=&iban=
+        [ResponseType(typeof(AccountLoginDTO))]
+        public async Task<IHttpActionResult> GetAccount(string email, string username, string iban)
+        {
+            AccountLoginDTO account = new AccountLoginDTO(email, username, iban);
+            account.ValidateInputAccount();
+
+            //Invalid account parameters
+            if (account.IsInputValid == false)  return Ok(account);
+
+
+            //Valid account parameters
+            AccountLoginDTO accountToSearch = await db.Accounts.Select(b =>
+              new AccountLoginDTO()
+              {
+                  Username = b.Username,
+                  Id = b.Id,
+                  Iban = b.Iban,
+                  Email = b.Email,
+                  
+              }).SingleOrDefaultAsync(b => b.Username == username && b.Email == email && b.Iban == iban);
+
+            //Account not found
+            if (accountToSearch == null)
+            {
+                account.DoesAccountExist = false;
+                account.Id = 0;
+                account.Username = null;
+                account.Email = null;
+                account.Iban = null;
+                
+                account.ErrorMessages.Add("Account not found !") ;
+            }
+            else
+            {
+                account = accountToSearch;
+
+                account.IsInputValid = true;
+                account.DoesAccountExist = true;
+            }
+
 
             return Ok(account);
         }

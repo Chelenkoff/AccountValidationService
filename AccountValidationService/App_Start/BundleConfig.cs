@@ -25,14 +25,18 @@ namespace AccountValidationService
                       "~/Content/site.css",
                       "~/Content/particlesanimation.css",
                       "~/Content/simpleverticaltab.css",
-                      "~/Content/filtered_panel_table.css"));
+                      "~/Content/filtered_panel_table.css",
+                      "~/Content/login_form.css",
+                      "~/Content/popup_modal.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
           "~/Scripts/knockout-{version}.js",
           "~/Scripts/app.js",
           "~/Scripts/animation-particles.js",
           "~/Scripts/simple-vertical-tab.js",
-          "~/Scripts/filtered_panel_table.js"));
+          "~/Scripts/filtered_panel_table.js",
+          "~/Scripts/login-form.js",
+          "~/Scripts/popup-modal.js"));
         }
     }
 }

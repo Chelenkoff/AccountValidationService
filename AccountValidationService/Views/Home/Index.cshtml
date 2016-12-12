@@ -30,7 +30,36 @@
                 <!-- Login section -->
                 <div class="bhoechie-tab-content active">
                     <center>
-                        
+
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-12 col-md-offset-1">
+                                   
+                                    <div class="account-wall">
+                                        <img class="profile-img" src="http://www.freeiconspng.com/uploads/user-login-icon-29.png"
+                                             alt="">
+                                        <form class="form-signin" >
+                                            <input data-bind="textInput: mail"   class="form-control"  placeholder="Email" required autofocus>
+                                            <input data-bind="textInput: username"  class="form-control"   placeholder="Username" required>
+                                            <input data-bind="textInput: iban"  class="form-control"   placeholder="Iban" required>
+
+                                            <button data-bind="click:  getAccountDetails" id="btnLogin" class="btn btn-lg btn-primary btn-block" >
+                                                Sign in
+                                            </button>
+                                        </form>
+
+
+
+                                    </div>
+                                    <br>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
                     </center>
                 </div>
                 <!-- Register section -->
@@ -92,6 +121,73 @@
 </div>
 
 <div id="particles"></div>
+
+<!-- Modal -->
+<div class="modal" id="myModal" data-bind="with: accountDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="text-danger fa fa-times"></i></button>
+                <h4 class="modal-title" id="myModalLabel"> <strong>Login</strong> - result </h4>
+            </div>
+            <div class="modal-body">
+
+                <!-- ko if: IsInputValid == false -->
+
+                <div >
+                    <div class="alert alert-danger">
+                        <h4>The following errors occurred:</h4>
+
+                        <ul data-bind="foreach: ErrorMessages">
+                            <li data-bind='text: $data'></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /ko -->
+
+
+                <!-- ko if: IsInputValid == true && DoesAccountExist == false -->
+                <div>
+                    <div class="alert alert-warning">
+                       <h4>User does not exist:</h4>
+
+                        <ul data-bind="foreach: ErrorMessages">
+                            <li data-bind='text: $data'></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- /ko -->
+
+                <!-- ko if: IsInputValid == true && DoesAccountExist == true -->
+                <div>
+                    <div class="alert alert-success">
+                        <h4>User logged in:</h4>
+
+                        <ul>
+                            <li >User ID: <span data-bind='text: Id'></span></li>
+                            <li>Username: <span data-bind='text: Username'></span></li>
+                            <li>Email: <span data-bind='text: Email'></span></li>
+                            <li>IBAN: <span data-bind='text: Iban'></span></li>
+
+
+
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- /ko -->
+
+
+            </div>
+
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- fim Modal-->    
 
 
 
