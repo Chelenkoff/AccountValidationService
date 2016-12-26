@@ -46,6 +46,32 @@
         });
     };
 
+
+
+    self.newAccount = {
+        Email: ko.observable(),
+        Iban: ko.observable(),
+        Username: ko.observable()
+    }
+
+    self.registerAccount = ko.observable();
+
+    self.addAccount = function (formElement) {
+        var account = {
+            Email: self.newAccount.Email(),
+            Iban: self.newAccount.Iban(),
+            Username: self.newAccount.Username()
+        };
+
+        ajaxHelper(accountsUri, 'POST', account).done(function (item) {
+           // self.accounts.push(item);
+            self.registerAccount(item);
+            getAllAccounts();
+
+        });
+    }
+
+
     // Fetch the initial data.
     getAllAccounts();
 };

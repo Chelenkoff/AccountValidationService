@@ -27,10 +27,10 @@ namespace AccountValidationService
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            config.Routes.MapHttpRoute(
-            name: "ContactApi",
-            routeTemplate: "api/{controller}/{email}/{username}/{iban}"
-            );
+            //config.Routes.MapHttpRoute(
+            //name: "ContactApi",
+            //routeTemplate: "api/{controller}/{email}/{username}/{iban}"
+            //);
 
             config.Formatters.JsonFormatter.SupportedMediaTypes
                 .Add(new MediaTypeHeaderValue("text/html"));

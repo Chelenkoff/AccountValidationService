@@ -15,5 +15,7 @@ namespace AccountValidationService.Models
         public string Iban { get; set; }
         [Required]
         public string Username { get; set; }
+
+
     }
 }

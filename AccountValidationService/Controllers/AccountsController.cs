@@ -138,29 +138,97 @@ namespace AccountValidationService.Controllers
         }
 
         // POST: api/Accounts
-        [ResponseType(typeof(Account))]
+        [ResponseType(typeof(AccountRegisterDTO))]
         public async Task<IHttpActionResult> PostAccount(Account account)
         {
-            if (!ModelState.IsValid)
+            AccountRegisterDTO accountToRegister = new AccountRegisterDTO(account);
+            accountToRegister.ValidateInputAccount();
+
+            //Invalid account parameters
+            if (accountToRegister.IsInputValid == false)
             {
-                return BadRequest(ModelState);
+                return Ok(accountToRegister);
+                //return CreatedAtRoute("DefaultApi", new { id = accountToRegister.Id }, accountToRegister);
+
             }
 
-            db.Accounts.Add(account);
-            await db.SaveChangesAsync();
+            //Valid account parameters
+            AccountRegisterDTO accountToSearch = await db.Accounts.Select(b =>
+              new AccountRegisterDTO()
+              {
+                  //Id = b.Id,
+                  Username = b.Username,
+                  Iban = b.Iban,
+                  Email = b.Email,
+
+              }).FirstOrDefaultAsync(b => ( b.Username.Equals( accountToRegister.Username) || b.Email.Equals(accountToRegister.Email) || b.Iban.Equals(accountToRegister.Iban) ) );
+
+            //Account already registered
+            if (accountToSearch != null)
+            {
+                //accountToRegister = accountToSearch;
+                //accountToRegister.Id = 0;
+                accountToRegister.Clear();
+
+                accountToRegister.IsInputValid = true;
+                accountToRegister.DoesAccountExist = true;
+                accountToRegister.IsRegistrationSuccessful = false;
+                accountToRegister.ErrorMessages.Add("Account already exists !");
+                accountToRegister.ErrorMessages.Add("Username, Email and IBAN have to be unique.");
+
+
+                return Ok(accountToRegister);
+
+            }
+            else
+            {
+
+                accountToRegister.DoesAccountExist = false;
+                accountToRegister.IsInputValid = true;
+                //account.Id = 0;
+
+                try
+                {
+                    db.Accounts.Add(account);
+                    await db.SaveChangesAsync();
+
+
+                    accountToRegister.IsRegistrationSuccessful = true;
+
+                    //  return CreatedAtRoute("DefaultApi", new { id = accountToRegister.Id }, accountToRegister);
+                    return CreatedAtRoute("DefaultApi", null, accountToRegister);
+
+
+
+                }
+                catch (Exception)
+                {
+
+                    accountToRegister.IsRegistrationSuccessful = false;
+                }
+                
+
+            }
+
+           // return CreatedAtRoute("DefaultApi", new { id = accountToRegister.Id }, accountToRegister);
+
+            return Ok(accountToRegister);
+
+
+
 
             // New code:
 
-            var dto = new AccountDTO()
-            {
-                Email = account.Email,
-                Iban = account.Iban,
-                Id = account.Id,
-                Username = account.Username
-            };
+            //var dto = new AccountRegisterDTO()
+            //{
+            //    Email = account.Email,
+            //    Iban = account.Iban,
+            //    Id = account.Id,
+            //    Username = account.Username
+            //};
 
 
-            return CreatedAtRoute("DefaultApi", new { id = account.Id }, dto);
+            //return CreatedAtRoute("DefaultApi", new { id = account.Id }, dto);
         }
 
         // DELETE: api/Accounts/5

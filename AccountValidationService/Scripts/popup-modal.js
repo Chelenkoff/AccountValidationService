@@ -15,6 +15,18 @@
         $('#myModal').modal('show');
     })
 
+    //$('#btnRegister').on('click', function (event) {
+    //    event.preventDefault();
+    //    $('#registerModal').modal('show');
+    //})
+
+    $('#registerForm').submit(function () {
+            event.preventDefault();
+            $('#registerModal').modal('show');
+    });
+
+
+
     $('.btn-mais-info').on('click', function (event) {
         $('.open_info').toggleClass("hide");
     })
